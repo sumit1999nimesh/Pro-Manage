@@ -81,7 +81,7 @@ const CreateTask= async(req,res)=>{
     }
 
     const updateTaskstate=async (req, res) => {
-      
+              console.log(" trmt ");
       const taskId = req.params.taskid;
       const newState = req.params.state;
         console.log(taskId+"  ts  ns " +newState);
