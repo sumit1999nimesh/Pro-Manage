@@ -84,6 +84,7 @@ const CreateTask= async(req,res)=>{
       
       const taskId = req.params.taskid;
       const newState = req.params.state;
+        console.log(taskId+"  ts  ns " +newState);
       if (!taskId|| !newState) {
         return res.status(400).json({ error: 'Please provide all required fields.' });
       }
