@@ -64,7 +64,8 @@ const login= async(req,res)=>{
 
 
 const updateUser= async(req,res)=>{
-  const userId=req.params.userid;
+  const userId=req.userId;
+ console.log("uid" +userId)
   const { name, oldPassword, newPassword } = req.body;
     console.log(name +' '+ oldPassword+' '+ newPassword)
   if (!name || !oldPassword || !newPassword) {
