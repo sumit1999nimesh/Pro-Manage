@@ -65,29 +65,41 @@ const login= async(req,res)=>{
 
 const updateUser= async(req,res)=>{
   const userId=req.params.userid;
-  const { name, email, password } = req.body;
-  
-  if (!name || !email || !password) {
+  const { name, oldPassword, newPassword } = req.body;
+    console.log(name +' '+ oldPassword+' '+ newPassword)
+  if (!name || !oldPassword || !newPassword) {
       return res.status(400).json({ error: 'Please provide all required fields.' });
     }
-    if (password.length<=4) {
-      return res.status(400).json({ error: 'Password length is less than 5' });
+    if (newPassword.length<=4) {
+      return res.status(400).json({ error: 'New Password length is less than 5' });
+    }
+    const existingUser = await userModel.findById(userId);
+    const matchPassword= await bcrypt.compare(oldPassword ,existingUser.password);
+    if(!matchPassword){
+        return res.status(400).json({ error: 'Invalid Credentials' });
+    }
+    else{
+      const hashedPassword= await bcrypt.hash(newPassword,10);
+    //
+    try {   
+      const result = await userModel.updateOne(
+      { _id: userId }, 
+      { $set: { password: hashedPassword } },
+      { $set: { name: name } }
+  );
+  if (result.modifiedCount === 1) {
+    res.status(200).json({ message: `Password is updated` });
+} else {
+    res.status(404).json({ message: 'Task not found' });
+}
+} catch (error) {
+console.error('Error updating task state:', error);
+res.status(500).json({ message: 'Internal server error' });
+}
+      //
     }
 
-    console.error(userId);
-    const hashedPassword= await bcrypt.hash(password,10);
-    const updateUser={
-      name:name, 
-      email: email,
-       password: hashedPassword }
-
-    try {
-      const user=await userModel.findByIdAndUpdate(userId,updateUser,{new :true});
-      res.status(200).json(user);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong' });
-    }
+   
   }
 
 module.exports = {signup,login,updateUser}
