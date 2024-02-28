@@ -8,6 +8,6 @@ const userRouter =express.Router();
 
 userRouter.post("/signup" ,signup);
 userRouter.post("/login" ,login);
-userRouter.put("/updateuser/:userid" ,auth , updateUser);
+userRouter.put("/updateuser/" ,auth , updateUser);
 
 module.exports= userRouter;
