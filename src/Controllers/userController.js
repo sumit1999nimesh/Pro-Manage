@@ -85,7 +85,7 @@ const updateUser= async(req,res)=>{
     try {   
       const result = await userModel.updateOne(
       { _id: userId }, 
-      { $set: { password: hashedPassword },{ name: name } }
+      { $set: { password: hashedPassword, name: name } }
   );
   if (result.modifiedCount === 1) {
     res.status(200).json({ message: `Password is updated` });
