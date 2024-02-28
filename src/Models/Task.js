@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const checklistItemSchema = new mongoose.Schema({
   checked: {
     type: Boolean,
@@ -9,6 +10,7 @@ const checklistItemSchema = new mongoose.Schema({
     required: true
   }
 });
+
 const TaskSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -23,17 +25,25 @@ const TaskSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  checklist: [checklistItemSchema],
+  checklist: {
+    type: [checklistItemSchema],
+    required: true,
+    validate: [arrayLimit, 'Checklist cannot be empty']
+  },
   dueDate: {
     type: Date,
     required: false,
-    default:null
+    default: null
   },
   state: {
     type: String,
     required: true
   }
 });
+
+function arrayLimit(val) {
+  return val && val.length > 0;
+}
 
 const Task = mongoose.model('Task', TaskSchema);
 
