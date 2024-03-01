@@ -10,7 +10,7 @@ const signup= async(req,res)=>{
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Please provide all required fields.' });
     }
- email=email.toLowerCase();
+
     if (password.length<=4) {
       return res.status(400).json({ error: 'Password length is less than 5' });
     }
@@ -43,7 +43,7 @@ const login= async(req,res)=>{
     if (!email|| !password) {
         return res.status(400).json({ error: 'Please provide all required fields.' });
       }
- email=email.toLowerCase();
+
       try {
         const existingUser = await userModel.findOne({ email });
         if (!existingUser) {
