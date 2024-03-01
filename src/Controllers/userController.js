@@ -102,4 +102,20 @@ res.status(500).json({ message: 'Internal server error' });
    
   }
 
-module.exports = {signup,login,updateUser}
+const getUserName= async(req,res)=>{ 
+  const userId=req.userId;
+
+  const user = await userModel.findById(userId);
+
+        if (user) {
+            res.json({ username: user.name });
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error retrieving user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+module.exports = {signup,login,updateUser,getUserName}
