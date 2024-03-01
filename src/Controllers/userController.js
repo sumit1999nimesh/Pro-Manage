@@ -106,7 +106,7 @@ const getUserName= async(req,res)=>{
   const userId=req.userId;
 
   const user = await userModel.findById(userId);
-
+   try{
         if (user) {
             res.json({ username: user.name });
         } else {
